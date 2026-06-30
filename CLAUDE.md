@@ -10,6 +10,9 @@ knowledge (data shapes, edge cases, decisions) into files, not just the conversa
 - [`docs/notes/operator-control-learnings.md`](docs/notes/operator-control-learnings.md) is the
   decision journal — the "why" behind each spec statement (`Cluster N · DM` references).
 - [`docs/ACCEPTANCE.md`](docs/ACCEPTANCE.md) is the Phase 1 definition of done.
+- [`docs/BACKLOG.md`](docs/BACKLOG.md) is the emergent-concerns capture surface — bugs and
+  fragilities noticed while building, distinct from the design-deferral list and from
+  ACCEPTANCE. Captured with `/backlog`, reviewed with `/triage`.
 
 Don't restate these elsewhere — link, don't duplicate. Docs state what *is*, not what was removed;
 trust git for history.
@@ -34,6 +37,18 @@ trust git for history.
   the repo, not the chat. The approved commit plan is volatile; the checklist is how a fresh session
   knows what's already done.
 - Never bump a version, tag, or cut a release without an explicit instruction.
+
+## The backlog loop
+
+- When you observe a bug, fragility, or "this will bite us later" concern that is not the task
+  in front of you, capture it with `/backlog` and keep going — do not derail to fix or argue it.
+  The skill dedups and stamps; see [`docs/BACKLOG.md`](docs/BACKLOG.md) for the entry schema.
+- At phase boundaries (or when deciding what to work on next), run `/triage`: it reviews the
+  roadmap (DESIGN §7), phase progress (ACCEPTANCE), and the backlog, then proposes a ranked next
+  item with a routing verdict per concern. Agent proposes, **the human decides** — triage starts
+  no work and runs no commit.
+- Routing lives entirely in `/triage`; capture stays route-agnostic, so the routes can change
+  without touching `/backlog` or the backlog file.
 
 ## The test gate
 
