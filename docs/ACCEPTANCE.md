@@ -48,7 +48,7 @@ must be handled by design and pinned by a fixture test.
       absent and stale = `incomplete`. `healthz.activeRuns` is the authoritative cross-check.
       "No result = running" must not produce phantom runs. **(test: fixtures for each of the three
       states, plus a healthz cross-check case.)**
-- [ ] **Transcript pairing:** every `tool_use` is paired with its `tool_result`; payloads truncated
+- [x] **Transcript pairing:** every `tool_use` is paired with its `tool_result`; payloads truncated
       at ~4 KB. **(test: a fixture with an unpaired tool_use and an oversized payload.)**
 - [ ] **Any residual `/proc` scan** uses `grep -m1` (never `grep | head`, which SIGPIPEs under
       `pipefail`) and excludes `$$` (it self-matches on the discriminator). Largely moot once cancel
@@ -77,11 +77,13 @@ must be handled by design and pinned by a fixture test.
 The test corpus is captured real data, not hand-written mocks — the parser's job is to survive the
 shapes the cluster actually emits.
 
-- [ ] `test/fixtures/` holds real samples captured during the "probe the cluster" step: at least one
+- [x] `test/fixtures/` holds real samples captured during the "probe the cluster" step: at least one
       complete transcript, one incomplete/running transcript, a `healthz` response, a workdir
       listing, and a cost-bearing final `result`.
-      <!-- 4/5 captured (complete transcript, healthz, workdir listing, cost-bearing result). The
-      incomplete/running transcript lands with the run-state heuristic commit, which consumes it. -->
+      <!-- complete: logs/worker-…-mqi1ilmpq.log (cost 1.97); incomplete/running:
+      transcripts/incomplete-unpaired.jsonl (real transcript cut mid-tool, no final result);
+      healthz: healthz/idle.json; workdir: workdirs/empty.txt; cost-bearing result: in the worker
+      transcript's final result line. -->
 - [x] `node --test` runs offline against those fixtures and is green.
 - [x] The seam is **injectable**: an in-memory backend implements `listLogs`, `readTranscript`,
       `scanWorkdirs`, `tailDispatcherLog`, `healthz` from `test/fixtures/`, and the suite runs against

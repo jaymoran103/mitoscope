@@ -18,6 +18,11 @@ in-memory backend (`src/source/memory.js`) serves the seam from these files so
 | `workdirs/empty.txt` | real | `find /data/work …` while idle — empty (no active runs). |
 | `dispatcher/startup.log` | real | The dispatcher's stdout after the Jun 30 pod restart (startup lines only). |
 | `state.json` | real | `/data/state.json` — dispatcher idempotency state. Reference for later phases. |
+| `transcripts/incomplete-unpaired.jsonl` | derived | `reviewer-…-mqjsc32i2.log` cut after its first `tool_use` line — real cluster bytes truncated at a line boundary, i.e. the exact on-disk shape of a run still streaming / killed mid-tool: an unpaired `tool_use` and no final `result`. Backs the §8 pairing edge and the incomplete/running state. |
+
+`logs/` is the run corpus the seam serves (it mirrors `/data/logs`, and only files in
+`logs/listing.txt` are listed by `listLogs()`). `transcripts/` holds crafted/derived
+inputs for the timeline parser — read directly by the parser test, not served as runs.
 
 ## Why some shapes are reconstructed, not captured
 
