@@ -65,3 +65,24 @@ Copy this block for a new concern (or invoke `/backlog`, which fills it in and d
 - **Surfaces / blocks:** Blocks correctness of the run-state heuristic commit (handle it there).
   Severity: low / latent.
 - **Captured:** 2026-06-30 · e90887a · Phase 1
+
+### parseTranscript maxPayload: 0 silently becomes 4096 (falsy-zero footgun)
+- **Where:** src/transcript.js (`parseTranscript`, `const maxPayload = opts.maxPayload || DEFAULT_MAX_PAYLOAD`).
+- **Context:** `||` treats `0` as absent, so a caller passing `maxPayload: 0` to mean "truncate
+  everything" silently gets the 4096 default instead. No current caller passes 0 (the parser is
+  called with defaults), so it's latent — logged so the next caller that wants a custom cap doesn't
+  hit a surprising floor. Fix is one char: `opts.maxPayload ?? DEFAULT_MAX_PAYLOAD`.
+- **Surfaces / blocks:** Not reachable until a consumer passes an explicit `maxPayload`. Severity:
+  low / trivial.
+- **Captured:** 2026-06-30 · 909dbc4 · Phase 1
+
+### truncate() output exceeds maxBytes by the truncation marker length (soft cap)
+- **Where:** src/transcript.js (`truncate`); test asserts against `DEFAULT_MAX_PAYLOAD + 64` in test/transcript.test.js.
+- **Context:** The appended `…[truncated N more bytes]` marker is added *after* the cap, and its
+  length grows with N, so a truncated payload always exceeds `maxBytes` by ~20–30 bytes. The test
+  acknowledges this by bounding against `DEFAULT_MAX_PAYLOAD + 64` rather than the cap itself. Fine
+  while the cap is advisory (keep one giant payload from bloating the timeline), but if a hard byte
+  ceiling ever matters (e.g. a downstream buffer/quota), the marker room must be reserved *inside*
+  `maxBytes`. Logged so the soft-vs-hard distinction is a decision, not an accident.
+- **Surfaces / blocks:** No current consumer needs a hard cap. Severity: low / latent.
+- **Captured:** 2026-06-30 · 909dbc4 · Phase 1
