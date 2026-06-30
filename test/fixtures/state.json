@@ -1,0 +1,52 @@
+{
+  "bootstrapped": {
+    "plat/timealign-initial": true
+  },
+  "reviewed": {
+    "plat/timealign-initial#3": "82b8915c298f71f664b6893b41164c5d13a077b6",
+    "plat/timealign-initial#5": "d20461a331cad5cd0df933d7d085473a15803fb9",
+    "plat/timealign-initial#7": "8d56cf31af6e3a0e55800e35afd5d3ff8c787ac3",
+    "plat/timealign-initial#9": "5327e7f7dd1f8423b0d8def57388696a2fe13e7d",
+    "plat/timealign-initial#10": "b24b9ba6b3dd2f2b14e8234ec503318c813c0c18",
+    "plat/timealign-initial#12": "08144fc3d5eb2c1c58f048c5b68238dddb972614"
+  },
+  "retried": {
+    "plat/timealign-initial#2": 1,
+    "plat/timealign-initial#3": 1,
+    "plat/timealign-initial#4": 1,
+    "plat/timealign-initial#7": 1,
+    "plat/timealign-initial#10": 1
+  },
+  "handledFailures": {
+    "plat/timealign-initial#77": true,
+    "plat/timealign-initial#78": true,
+    "plat/timealign-initial#86": true,
+    "plat/timealign-initial#87": true,
+    "plat/timealign-initial#80": true,
+    "plat/timealign-initial#9@f2479c30538079ee2de84aea65588f4f2ede8b66": true,
+    "plat/timealign-initial#79": true,
+    "plat/timealign-initial#111": true,
+    "plat/timealign-initial#10@b5a954b16dcfb6fc3e72a8511466c017e29bdca1": true,
+    "plat/timealign-initial#109": true,
+    "plat/timealign-initial#116": true,
+    "plat/timealign-initial#10@2c871fa0ef45a88384d8bf6031faacb751745126": true
+  },
+  "retriedRuns": {
+    "plat/timealign-initial@check@a2b0339eba9c6f6150abcd14dbf91bfe98567779": true,
+    "plat/timealign-initial@check@b5a954b16dcfb6fc3e72a8511466c017e29bdca1": true
+  },
+  "previewLinked": {
+    "plat/timealign-initial#1": true,
+    "plat/timealign-initial#3": true,
+    "plat/timealign-initial#5": true,
+    "plat/timealign-initial#7": true,
+    "plat/timealign-initial#9": true,
+    "plat/timealign-initial#10": true,
+    "plat/timealign-initial#12": true
+  },
+  "validatorRounds": {},
+  "builderResumes": {
+    "plat/timealign-initial": 1
+  },
+  "pendingVerdicts": {}
+}

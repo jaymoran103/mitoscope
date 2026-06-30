@@ -1,0 +1,3 @@
+2026-06-30T09:41:07.861Z info dispatcher up port=9909 forgejo=http://forgejo-http.forgejo.svc.cluster.local:3000 workdir=/data maxConcurrent=2 autoRelease=true
+2026-06-30T09:41:07.880Z info system webhook created url=http://agents.agents.svc.cluster.local:9909/hook
+2026-06-30T09:41:07.954Z info qa user ensured (probe) user=qatester

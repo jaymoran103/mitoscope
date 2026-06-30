@@ -1,0 +1,13 @@
+{
+  "name": "mitoscope",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Local read-only observability for the mitosis agent crew",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

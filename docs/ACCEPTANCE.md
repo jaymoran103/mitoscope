@@ -13,7 +13,7 @@ Each item marked **(test)** must be backed by a `node --test` assertion against 
 
 ## Functional — endpoints and the seam
 
-- [ ] **Source seam** exists as the single read boundary: `listLogs()`, `readTranscript(runId)`,
+- [x] **Source seam** exists as the single read boundary: `listLogs()`, `readTranscript(runId)`,
       `scanWorkdirs()`, `tailDispatcherLog()`, `healthz()`. No consumer reaches `kubectl` directly.
       The backend behind the seam is swappable without touching consumers (DESIGN §2; this is the
       Phase 2 swap surface). Swappability is proven, not asserted: an in-memory backend implementing
@@ -80,10 +80,12 @@ shapes the cluster actually emits.
 - [ ] `test/fixtures/` holds real samples captured during the "probe the cluster" step: at least one
       complete transcript, one incomplete/running transcript, a `healthz` response, a workdir
       listing, and a cost-bearing final `result`.
-- [ ] `node --test` runs offline against those fixtures and is green.
-- [ ] The seam is **injectable**: an in-memory backend implements `listLogs`, `readTranscript`,
+      <!-- 4/5 captured (complete transcript, healthz, workdir listing, cost-bearing result). The
+      incomplete/running transcript lands with the run-state heuristic commit, which consumes it. -->
+- [x] `node --test` runs offline against those fixtures and is green.
+- [x] The seam is **injectable**: an in-memory backend implements `listLogs`, `readTranscript`,
       `scanWorkdirs`, `tailDispatcherLog`, `healthz` from `test/fixtures/`, and the suite runs against
       it. This keeps `node --test` cluster-free and exercises the Phase 2 swap surface.
-- [ ] A meta-test walks the seam (`listLogs`, `readTranscript`, `scanWorkdirs`, `tailDispatcherLog`,
+- [x] A meta-test walks the seam (`listLogs`, `readTranscript`, `scanWorkdirs`, `tailDispatcherLog`,
       `healthz`) and **fails if any function lacks a corresponding fixture** — so adding a parser
       without a fixture turns the suite red on its own, rather than relying on discipline.
