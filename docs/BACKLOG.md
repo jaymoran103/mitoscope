@@ -86,3 +86,36 @@ Copy this block for a new concern (or invoke `/backlog`, which fills it in and d
   `maxBytes`. Logged so the soft-vs-hard distinction is a decision, not an accident.
 - **Surfaces / blocks:** No current consumer needs a hard cap. Severity: low / latent.
 - **Captured:** 2026-06-30 · 909dbc4 · Phase 1
+
+### Cost prefilter assumes compact JSON; a spaced result line is dropped, undercounting the total
+- **Where:** src/cost.js (`finalCost`, the `line.includes('"type":"result"')` prefilter).
+- **Context:** The cheap prefilter only matches compact `"type":"result"`. A pretty-printed/spaced
+  result line (`"type": "result"`) fails it, so `finalCost` returns null, the run is counted
+  `pending`, and its cost silently drops from `/cost` — a silent undercount, worse than a crash.
+  `src/transcript.js` parses every line without this prefilter, so cost.js is strictly more fragile
+  than its sibling for no functional gain. Not reachable from current fixtures (the cluster emits
+  compact stream-json — all three fixture costs compute correctly). Fix: drop the prefilter, or gate
+  on a whitespace-tolerant check. Surfaced by the commit-3 review.
+- **Surfaces / blocks:** Latent until non-compact transcripts appear. Severity: low / robustness.
+- **Captured:** 2026-06-30 · 1198c52 · Phase 1
+
+### /cost total carries float noise (2.1893222000000003) with no rounding boundary
+- **Where:** src/cost.js (`rollup` — `totalCostUsd` accumulation/return).
+- **Context:** `total_cost_usd` values are summed as JS doubles and returned unrounded; the corpus
+  already yields `2.1893222000000003`. The rollup test's `1e-9` tolerance masks this. Arguably
+  correct for a rollup to return full precision, but the `/cost` endpoint / SPA cost-header will
+  serialize it verbatim unless someone rounds. Decide where rounding lives (endpoint/formatting
+  layer) so the noisy number never reaches the UI. Surfaced by the commit-3 review.
+- **Surfaces / blocks:** Blocks the /cost endpoint / SPA cost-header commit — own the rounding there.
+  Severity: low / cosmetic.
+- **Captured:** 2026-06-30 · 1198c52 · Phase 1
+
+### Cost cache grows unbounded — entries for deleted runs are never evicted
+- **Where:** src/cost.js (`rollup` — `cache` Map; entries set, never deleted).
+- **Context:** `rollup` adds a cache entry per runId and never removes entries for runs that vanish
+  from `listLogs` (rotated/deleted logs). No correctness impact — rollup iterates only current logs,
+  and runIds are unique-suffixed so there is no reuse/staleness risk — but the Map grows for the
+  process lifetime. Fix: prune keys not present in the current `listLogs` pass. Surfaced by the
+  commit-3 review.
+- **Surfaces / blocks:** Latent; a long-running server accumulates dead entries. Severity: low / latent.
+- **Captured:** 2026-06-30 · 1198c52 · Phase 1
