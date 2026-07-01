@@ -40,7 +40,7 @@ Each item marked **(test)** must be backed by a `node --test` assertion against 
 These are the things that look correct in a demo and silently produce wrong output in real use. Each
 must be handled by design and pinned by a fixture test.
 
-- [ ] **Cost is read only from the final `result` event.** Per-message `output_tokens` undercuts the
+- [x] **Cost is read only from the final `result` event.** Per-message `output_tokens` undercuts the
       authoritative total by ~7–9×, so mid-run cost is unavailable by nature and must not be
       displayed as authoritative. **(test: a fixture whose per-message sum diverges from the final
       total asserts we report the final total.)**
